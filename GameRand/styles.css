@@ -1,0 +1,69 @@
+:root {
+    --neon-color: #df0101;
+    /* Hauptfarbe für Rahmen und Glow */
+    --background-color: transparent;
+    /* Body-Hintergrund */
+}
+
+body {
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* Container übernimmt die Größe des 16:9-Bildes */
+.image-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+}
+
+/* Hintergrundbild */
+.full-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* NEON-Rahmen relativ zum Container (= Bild) */
+.neon-frame-glow {
+    box-sizing: border-box;
+    position: absolute;
+
+    /* Werte bleiben prozentbasiert relativ zum Bild */
+    top: 5.25%;
+    left: 15.2%;
+    height: 79.7%;
+    aspect-ratio: 16/9;
+
+    border: 4px solid var(--neon-color);
+    border-radius: 1.9%;
+    background-color: transparent;
+
+    /* nur Glow pulsieren, keine Skalierung */
+    animation: neon-glow-pulse 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes neon-glow-pulse {
+    0% {
+        box-shadow:
+            0 0 2px var(--neon-color),
+            0 0 5px var(--neon-color),
+            0 0 10px var(--neon-color),
+            0 0 18px var(--neon-color);
+    }
+
+    100% {
+        box-shadow:
+            0 0 4px var(--neon-color),
+            0 0 10px var(--neon-color),
+            0 0 20px var(--neon-color),
+            0 0 35px var(--neon-color);
+    }
+}

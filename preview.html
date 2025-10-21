@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <title>Overlay Preview</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            pointer-events: none;
+            /* verhindert Klick-Interaktion */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Hintergrund -->
+    <iframe src="Background/Background.html"></iframe>
+
+    <!-- Rahmen -->
+    <iframe src="GameRand/GameRand.html"></iframe>
+
+</body>
+
+</html>
