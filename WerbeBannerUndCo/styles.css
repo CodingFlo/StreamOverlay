@@ -1,0 +1,16 @@
+.image-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: absolute;
+
+    /* Werte bleiben prozentbasiert relativ zum Bild */
+    bottom: 1%;
+    left: 15.2%;
+    width: 79.5%;
+}
+
+.centered {
+    justify-content: center !important;
+}

@@ -5,6 +5,10 @@
     <meta charset="utf-8">
     <title>Overlay Preview</title>
     <style>
+        * {
+            pointer-events: none;
+        }
+
         body {
             margin: 0;
             overflow: hidden;
@@ -18,16 +22,20 @@
             width: 100vw;
             height: 100vh;
             border: none;
-            pointer-events: none;
             /* verhindert Klick-Interaktion */
         }
     </style>
 </head>
 
 <body>
-
     <!-- Hintergrund -->
     <iframe src="Background/Background.html"></iframe>
+
+    <!-- Werbung -->
+    <iframe src="WerbeBannerUndCo/Werbung.html"></iframe>
+
+    <!-- Schriftzug -->
+    <iframe src="WerbeBannerUndCo/Schriftzug.html"></iframe>
 
     <!-- Rahmen -->
     <iframe src="GameRand/GameRand.html"></iframe>
