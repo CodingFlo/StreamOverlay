@@ -1,0 +1,244 @@
+:root {
+    --digit-width: 100px;
+    /* Breite einer einzelnen Ziffer */
+    --digit-height: 120px;
+    /* Höhe einer einzelnen Ziffer */
+    --colon-height: 120px;
+    /* Höhe des Doppelpunkts */
+    --endtext-height: 120px;
+    /* Höhe des Endtext-Bildes */
+    --animation-slide-distance: 50px;
+    /* Distanz für Slide-Animationen */
+    --animation-duration-digit-roll: 0.3s;
+    /* Dauer für Ziffern-Roll-Animation */
+    --animation-duration-end-transition: 0.6s;
+    /* Dauer für Timer/Endtext-Übergang */
+    --gap-between-timer-layers: 40px;
+    /* Abstand zwischen den Timer-Layern */
+    --digit-margin: 2px;
+    /* Margin zwischen den Ziffern */
+    --colon-margin: 5px;
+    /* Margin um den Doppelpunkt */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Zentriert vertikal */
+    align-items: center;
+    /* Zentriert horizontal */
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* @keyframes Definitionen für Ziffern bleiben gleich */
+@keyframes slideDownAndFadeOut {
+    from {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideUpAndFadeIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+
+/* Animation für den Timer, der nach unten schiebt und ausblendet */
+@keyframes fadeOutSlideDown {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(var(--animation-slide-distance));
+        /* Verwendet die Variable */
+    }
+}
+
+/* Animation für den Endtext, der von oben hereinrutscht und einblendet */
+@keyframes fadeInSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(calc(-1 * var(--animation-slide-distance)));
+        /* Startet oberhalb */
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        /* Endet an seiner normalen Position */
+    }
+}
+
+#timers-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 20px;
+    /* transition-Eigenschaft hier entfernen, da wir @keyframes verwenden */
+}
+
+/* Wenn #timers-wrapper die Klasse 'animate-out' bekommt */
+#timers-wrapper.animate-out {
+    animation: fadeOutSlideDown var(--animation-duration-end-transition) ease-out forwards;
+}
+
+/* Wenn #timers-wrapper die Klasse 'animate-in' bekommt */
+#timers-wrapper.animate-in {
+    animation: fadeInSlideUp var(--animation-duration-end-transition) ease-out forwards;
+    /* Oder eine andere passende Animation */
+}
+
+
+.timer-layer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.digit-group {
+    display: flex;
+    align-items: center;
+}
+
+.doppelpunkt-layer {
+    height: var(--colon-height);
+    /* Nutzt die Variable */
+    width: auto;
+    object-fit: contain;
+    margin: 0 var(--colon-margin);
+    /* Nutzt die Variable */
+}
+
+/* --- Allgemeine Styles für Ziffern bleiben gleich --- */
+.digit-wrapper {
+    width: var(--digit-width);
+    height: var(--digit-height);
+    overflow: hidden;
+    position: relative;
+    margin: 0 var(--digit-margin);
+    /* Nutzt die Variable */
+}
+
+.digit-top,
+.digit-bottom {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+/* --- Startzustände (bevor .animate hinzugefügt wird) bleiben gleich --- */
+.digit-top {
+    transform: translateY(0%);
+    opacity: 1;
+    z-index: 2;
+}
+
+.digit-bottom {
+    transform: translateY(-100%);
+    opacity: 0;
+    z-index: 1;
+}
+
+/* --- WICHTIG: Animationszustand, wenn .animate-Klasse auf digit-wrapper ist --- */
+.digit-wrapper.animate .digit-top {
+    animation: slideDownAndFadeOut var(--animation-duration-digit-roll) ease-out forwards;
+}
+
+.digit-wrapper.animate .digit-bottom {
+    animation: slideUpAndFadeIn var(--animation-duration-digit-roll) ease-out forwards;
+}
+
+/* --- Klasse zum Deaktivieren der Animation für das "Teleportieren" bleibt gleich --- */
+.no-animation {
+    animation: none !important;
+}
+
+.digit-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* --- End/Start text Styles --- */
+#end-text,
+#start-text {
+    height: var(--endtext-height);
+    background-repeat: no-repeat;
+    background-position: center center;
+    /* Stelle sicher, dass sie zu Beginn die gleiche Breite/Höhe wie der Timer haben,
+       wenn sie erscheinen sollen, oder ihre eigene Größe basierend auf dem Inhalt */
+    /* Füge hier initial hidden hinzu, falls sie nicht sofort sichtbar sein sollen */
+    /* display: none; /* Dies wird durch JS gesteuert, aber als Fallback nützlich */
+    opacity: 0;
+    /* Starte mit 0 Opazität, damit die fadeIn-Animation funktioniert */
+    transform: translateY(0);
+    /* Standardposition, um von hier zu animieren */
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    /* Fallback Transition */
+}
+
+/* Animation für den Endtext, der von oben hereinrutscht und einblendet */
+#end-text.animate-in {
+    animation: fadeInSlideUp var(--animation-duration-end-transition) ease-out forwards;
+    pointer-events: auto;
+}
+
+/* Animation für den Endtext, der ausblendet und nach unten rutscht */
+#end-text.animate-out {
+    animation: fadeOutSlideDown var(--animation-duration-end-transition) ease-in forwards;
+}
+
+/* NEU: Animationen für den Start-Text */
+#start-text.animate-in {
+    animation: fadeInSlideUp var(--animation-duration-end-transition) ease-out forwards;
+    pointer-events: auto;
+}
+
+#start-text.animate-out {
+    animation: fadeOutSlideDown var(--animation-duration-end-transition) ease-in forwards;
+}
+
+/* Die hidden-Klasse ist entscheidend, um das Element aus dem Fluss zu nehmen */
+.hidden {
+    display: none !important;
+    opacity: 0 !important;
+    /* Sicherheitshalber auch hier */
+}
+
+/* Wenn ein Element sichtbar sein soll, aber seine Animation noch nicht gestartet ist,
+   sollte es nicht sofort auf 0 Opazität sein, wenn es die animate-in-Klasse bekommt.
+   Diese Regel stellt sicher, dass Elemente ohne animation-out zunächst voll sichtbar sind,
+   falls sie nicht von Anfang an ausgeblendet sein sollen. */
+#start-text:not(.animate-out),
+#timers-wrapper:not(.animate-out),
+#end-text:not(.animate-out) {
+    opacity: 1;
+    /* Standard-Opazität, wenn keine Ausblend-Animation läuft */
+    transform: translateY(0);
+    /* Standard-Position */
+}

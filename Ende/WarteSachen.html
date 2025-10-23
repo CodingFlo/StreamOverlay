@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <title>Overlay Preview</title>
+    <style>
+        * {
+            pointer-events: none;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        iframe {
+            width: 100vw;
+            border: none;
+        }
+
+        #center {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #center>img {
+            padding: 3vw;
+            padding-top: 0vh;
+            padding-bottom: 1vh;
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="center">
+        <img src="Twitch_Ende.png" />
+    </div>
+</body>
+
+</html>
