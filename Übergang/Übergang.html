@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <title>Overlay Preview</title>
+    <style>
+        * {
+            pointer-events: none;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            /* verhindert Klick-Interaktion */
+        }
+    </style>
+</head>
+
+<body>
+    <iframe src="übergangBackground.html"></iframe>
+    <iframe src="text-layer.html"></iframe>
+</body>
+
+</html>

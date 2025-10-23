@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Transition Text Layer</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        #text-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 50%;
+            height: auto;
+        }
+
+        .text-image {
+            width: 100%;
+            height: auto;
+            max-height: 45%;
+            /* zwei Bilder untereinander */
+            object-fit: contain;
+            margin: 10px 0;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="text-container">
+        <img src="Twitch_ÜbergangText_Name.png" class="text-image" id="text-top">
+        <img src="Twitch_ÜbergangText_Spruch.png" class="text-image" id="text-bottom">
+    </div>
+
+    <script>
+        const topImage = document.getElementById('text-top');
+        const bottomImage = document.getElementById('text-bottom');
+
+        const TOTAL = 3000;
+        const ENTER = 900;
+        const HOLD = 700;
+        const EXIT = 700;
+
+        let startTime;
+        function animate(ts) {
+            if (!startTime) startTime = ts;
+            const elapsed = ts - startTime;
+
+            const distance = 150; // Start/End offset in %
+
+            // Top Image (von oben)
+            if (elapsed < ENTER) {
+                topImage.style.opacity = (elapsed / ENTER);
+                topImage.style.transform = `translateY(calc(-${distance}% + ${(elapsed / ENTER) * distance}%))`;
+            } else if (elapsed < ENTER + HOLD) {
+                topImage.style.opacity = 1;
+                topImage.style.transform = `translateY(0%)`;
+            } else if (elapsed < TOTAL) {
+                let t = (elapsed - ENTER - HOLD) / EXIT;
+                topImage.style.opacity = 1 - t;
+                topImage.style.transform = `translateY(calc(-${t * distance}%))`;
+            } else {
+                topImage.style.opacity = 0;
+            }
+
+            // Bottom Image (von unten)
+            if (elapsed < ENTER) {
+                bottomImage.style.opacity = (elapsed / ENTER);
+                bottomImage.style.transform = `translateY(calc(${distance}% - ${(elapsed / ENTER) * distance}%))`;
+            } else if (elapsed < ENTER + HOLD) {
+                bottomImage.style.opacity = 1;
+                bottomImage.style.transform = `translateY(0%)`;
+            } else if (elapsed < TOTAL) {
+                let t = (elapsed - ENTER - HOLD) / EXIT;
+                bottomImage.style.opacity = 1 - t;
+                bottomImage.style.transform = `translateY(calc(${t * distance}%))`;
+            } else {
+                bottomImage.style.opacity = 0;
+            }
+
+            if (elapsed < TOTAL) requestAnimationFrame(animate);
+        }
+
+        requestAnimationFrame(animate);
+    </script>
+</body>
+
+</html>

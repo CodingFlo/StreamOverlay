@@ -1,0 +1,29 @@
+:root {
+    --base-color: #310404;
+    /* Basisfläche */
+    --particle-color: #cd9a9a;
+    /* Partikel */
+    --line-color: 255, 60, 60;
+    /* Linien */
+    --border-color: 255, 180, 180;
+    /* Border-Farbe */
+    --border-width: 8;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
