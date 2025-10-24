@@ -25,7 +25,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 50%;
+            width: 70%;
             height: auto;
         }
 
@@ -95,8 +95,9 @@
 
             if (elapsed < TOTAL) requestAnimationFrame(animate);
         }
-
-        requestAnimationFrame(animate);
+        setTimeout(() => {
+            requestAnimationFrame(animate);
+        }, 450);
     </script>
 </body>
 
