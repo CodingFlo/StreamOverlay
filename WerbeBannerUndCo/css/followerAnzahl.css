@@ -1,0 +1,144 @@
+:root {
+    --char-height: 48px;
+    /* Höhe der Zeichen */
+    --animation-duration-char-roll: 0.3s;
+    --gap-between-chars: 0px;
+    font-size: 20px;
+}
+
+/* 1. Basis-Layout */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: transparent !important;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* 2. Container */
+#image-text-display {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    gap: var(--gap-between-chars);
+    white-space: pre;
+    align-items: flex-end;
+    padding: 10px;
+}
+
+/* 3. Zeichen-Wrapper (variable Breite je Glyphe) */
+.char-wrapper {
+    display: inline-block;
+    overflow: hidden;
+    line-height: 1;
+    vertical-align: bottom;
+}
+
+/* Zum Entfernen beim Löschen/Hinzufügen */
+/* Entfernt: max-width-0 Logik für feste Breiten */
+
+/* 4. Innere Struktur (Roll-Fenster) */
+.digit-wrapper {
+    height: var(--char-height);
+    overflow: hidden;
+    display: inline-grid;
+    /* überlagern, aber Breite durch Inhalt */
+}
+
+/* 5. Animationsebenen */
+.digit-top,
+.digit-bottom {
+    grid-area: 1 / 1;
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    backface-visibility: hidden;
+}
+
+/* Startzustände VOR der Animation (unverändert) */
+.digit-top {
+    transform: translateY(0%);
+    opacity: 1;
+    z-index: 2;
+}
+
+.digit-bottom {
+    transform: translateY(-100%);
+    opacity: 0;
+    z-index: 1;
+}
+
+/* 6. Animation Keyframes (unverändert) */
+@keyframes slideDownAndFadeOut {
+    from {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideUpAndFadeIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+
+/* 7. Animationszustand (unverändert) */
+.digit-wrapper.animate .digit-top {
+    animation: slideDownAndFadeOut var(--animation-duration-char-roll) ease-out forwards;
+}
+
+.digit-wrapper.animate .digit-bottom {
+    animation: slideUpAndFadeIn var(--animation-duration-char-roll) ease-out forwards;
+}
+
+/* 8. Zeichen oder Bild */
+
+/* KORREKTUR: Position: absolut entfernt. */
+.char-img {
+    height: var(--char-height);
+    width: auto;
+    /* Breite entspricht Bildbreite */
+    display: block;
+    line-height: 1;
+    object-fit: contain;
+    z-index: 11;
+}
+
+/* Entfernt: empty-char mit fixer Breite */
+
+/* Styling für den Fallback-Text */
+.fallback-char {
+    position: relative;
+    z-index: 10;
+    color: #ff9900;
+    font-weight: bold;
+    font-size: var(--char-height);
+    line-height: 1;
+    display: inline-block;
+    /* Breite = Glyphenbreite */
+    height: var(--char-height);
+}
+
+/* Klasse zum Ausblenden des Fallback-Textes */
+.hidden-fallback {
+    /* Behält seinen Platz, wird unsichtbar */
+    opacity: 0;
+    transition: opacity var(--animation-duration-char-roll);
+}

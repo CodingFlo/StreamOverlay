@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ws.onopen = () => {
         console.log('[Frontend Timer] WebSocket-Verbindung zum Backend hergestellt.');
+
+        ws.send(JSON.stringify({
+            action: 'identify', // Eine Aktion, damit der Server weiß, was zu tun ist
+            clientType: 'alert' // Der spezifische Typ dieses Clients
+        }));
     };
 
     ws.onmessage = (event) => {
@@ -64,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getCurrentDigitValue(imgElement) {
         const imgSrc = imgElement.src;
-        const match = imgSrc.match(/Timer_(\d)/);
+        const match = imgSrc.match(/(\d)/);
         return match ? parseInt(match[1]) : 0;
     }
 
@@ -78,14 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentVal === newVal) {
             obj.wrapper.classList.remove('animate');
-            obj.top.src = `timerNumbers/Timer_${newVal}.png`;
-            obj.bottom.src = `timerNumbers/Timer_${newVal}.png`;
+            obj.top.src = `timerNumbers/${newVal}.png`;
+            obj.bottom.src = `timerNumbers/${newVal}.png`;
             return;
         }
 
         obj.wrapper.classList.remove('animate');
-        obj.top.src = `timerNumbers/Timer_${currentVal}.png`;
-        obj.bottom.src = `timerNumbers/Timer_${newVal}.png`;
+        obj.top.src = `timerNumbers/${currentVal}.png`;
+        obj.bottom.src = `timerNumbers/${newVal}.png`;
         void obj.wrapper.offsetWidth; // Reflow erzwingen
 
         requestAnimationFrame(() => {
@@ -93,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             obj.wrapper.classList.add('animate');
 
             const handleAnimationEnd = function () {
-                obj.top.src = `timerNumbers/Timer_${newVal}.png`;
+                obj.top.src = `timerNumbers/${newVal}.png`;
                 obj.wrapper.classList.remove('animate');
                 void obj.wrapper.offsetWidth; // Reflow nach Reset
                 obj.wrapper.removeEventListener('animationend', handleAnimationEnd);
@@ -135,8 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             obj.wrapper.classList.remove('animate'); // Sicherstellen, dass keine Animation läuft
             void obj.wrapper.offsetWidth; // Reflow
-            obj.top.src = `timerNumbers/Timer_${[initialMinTens, initialMinOnes, initialSecTens, initialSecOnes][index]}.png`;
-            obj.bottom.src = `timerNumbers/Timer_${[initialMinTens, initialMinOnes, initialSecTens, initialSecOnes][index]}.png`;
+            obj.top.src = `timerNumbers/${[initialMinTens, initialMinOnes, initialSecTens, initialSecOnes][index]}.png`;
+            obj.bottom.src = `timerNumbers/${[initialMinTens, initialMinOnes, initialSecTens, initialSecOnes][index]}.png`;
             void obj.wrapper.offsetWidth; // Reflow
         });
     }
