@@ -17,15 +17,16 @@ const PARTICLE_COLOR = getComputedStyle(document.documentElement).getPropertyVal
 const LINE_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--line-color').trim();
 
 // Übergang-Timing
-const TOTAL = 3000;
 const BUILD = 1000;
 const HOLD = 500;
 const RELEASE = 1000;
+const TOTAL = BUILD + HOLD + RELEASE;
 
 // Partikel
 const PARTICLE_COUNT = 400;
 let particles = [];
 
+// Particle-Klasse
 class Particle {
     constructor() {
         this.x = Math.random() * width;
@@ -51,24 +52,67 @@ class Particle {
     }
 }
 
-function createParticles() {
-    particles = [];
-    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+// Funktion zum asynchronen Erstellen von Partikeln
+function createParticlesAsync(count, callback) {
+    let created = 0;
+    const batch = 50; // Erzeuge in kleinen Portionen
+    function step() {
+        const end = Math.min(created + batch, count);
+        for (let i = created; i < end; i++) {
+            particles.push(new Particle());
+        }
+        created = end;
+        if (created < count) {
+            setTimeout(step, 0); // nächste Portion
+        } else {
+            callback();
+        }
+    }
+    step();
 }
-createParticles();
-
-// Animation
 let startTime;
 function animate(ts) {
     if (!startTime) startTime = ts;
     const elapsed = ts - startTime;
+
     ctx.clearRect(0, 0, width, height);
 
     const maxRadius = Math.sqrt(width * width + height * height) / 2;
     let innerRadius = 0;
 
+    // --- Vorhut-Kreis (weiß angepasst) ---
     ctx.save();
-    // Clip-Kreis
+    let leadRadius = 0;
+    const leadOffset = 50; // Vorlauf in ms
+    const END_OFFSET = 50; // maximal über den Hauptkreis hinaus
+    const LEAD_COLOR = '#a94141ff'; // zarte Farbe passend zum Rot
+
+    if (elapsed < BUILD) {
+        leadRadius = ((elapsed + leadOffset) / BUILD) * maxRadius;
+    } else if (elapsed < BUILD + HOLD) {
+        leadRadius = maxRadius;
+    } else if (elapsed < TOTAL) {
+        const t = (elapsed - BUILD - HOLD) / RELEASE;
+        leadRadius = maxRadius + t * END_OFFSET; // nur wachsen, nicht schrumpfen
+    }
+
+    ctx.beginPath();
+    ctx.arc(width / 2, height / 2, leadRadius, 0, Math.PI * 2);
+
+    if (elapsed < BUILD + HOLD) {
+        ctx.fillStyle = LEAD_COLOR;
+        ctx.fill();
+    } else {
+        ctx.strokeStyle = LEAD_COLOR;
+        ctx.lineWidth = 4;
+        ctx.stroke();
+    }
+
+    ctx.restore();
+    // --- Ende Vorhut-Kreis ---
+
+    ctx.save();
+    // Clip-Kreis (roter Hauptkreis, unverändert)
     if (elapsed < BUILD) {
         const radius = (elapsed / BUILD) * maxRadius;
         ctx.beginPath();
@@ -91,16 +135,16 @@ function animate(ts) {
     ctx.fillStyle = BASE_COLOR;
     ctx.fillRect(0, 0, width, height);
 
-    // Linien zwischen Partikeln
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const p1 = particles[i];
-        for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+    // Linien zwischen sichtbaren Partikeln
+    const maxDistSq = 10000;
+    particles.forEach((p1, i) => {
+        for (let j = i + 1; j < particles.length; j++) {
             const p2 = particles[j];
             const dx = p1.x - p2.x;
             const dy = p1.y - p2.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 100) {
-                const alpha = 1 - dist / 100;
+            const distSq = dx * dx + dy * dy;
+            if (distSq < maxDistSq) {
+                const alpha = 1 - distSq / maxDistSq;
                 ctx.strokeStyle = `rgba(${LINE_COLOR},${alpha})`;
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -109,7 +153,7 @@ function animate(ts) {
                 ctx.stroke();
             }
         }
-    }
+    });
 
     // Partikel zeichnen
     particles.forEach(p => {
@@ -123,8 +167,27 @@ function animate(ts) {
 
     ctx.restore();
 
+    // --- Neuer Rand-Kreis am Ende ---
+    if (elapsed >= BUILD + HOLD) {
+        const t = (elapsed - BUILD - HOLD) / RELEASE;
+        const borderRadius = innerRadius + 10; // 10px größer als transparenter Kreis
+        ctx.beginPath();
+        ctx.arc(width / 2, height / 2, borderRadius, 0, Math.PI * 2);
+        ctx.strokeStyle = LEAD_COLOR; // halbtransparente weiße Border
+        ctx.lineWidth = 50;
+        ctx.stroke();
+    }
+    // --- Ende neuer Rand-Kreis ---
+
     if (elapsed < TOTAL) requestAnimationFrame(animate);
     else ctx.clearRect(0, 0, width, height);
 }
 
-requestAnimationFrame(animate);
+
+// Starte Animation mit 50ms Verzögerung, in der die Partikel erstellt werden
+
+createParticlesAsync(PARTICLE_COUNT, () => {
+    setTimeout(() => {
+        requestAnimationFrame(animate);
+    }, 450);
+});

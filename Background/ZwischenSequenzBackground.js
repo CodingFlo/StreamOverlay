@@ -4,8 +4,8 @@ const ctx = canvas.getContext('2d');
 let particles = [];
 const PARTICLE_COUNT_FACTOR = 0.0003; // Partikel pro Pixel
 const MAX_DISTANCE = 125; // Max Distanz für Linien
-const FLOW_SPEED = 0.75; // Strömungsgeschwindigkeit
-const FLOW_VARIANCE = 0.4; // leichte Wellenbewegung
+const FLOW_SPEED = 0.25; // Strömungsgeschwindigkeit
+const FLOW_VARIANCE = 0.25; // leichte Wellenbewegung
 const FADE_SPEED = 0.02; // Geschwindigkeit des Ein-/Ausblendens
 
 function getCSSVariable(varName) {

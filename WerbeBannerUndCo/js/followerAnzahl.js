@@ -261,13 +261,15 @@ ws.onopen = () => {
 
     ws.send(JSON.stringify({
         action: 'identify', // Eine Aktion, damit der Server weiß, was zu tun ist
-        clientType: 'viewerLists' // Der spezifische Typ dieses Clients
+        clientType: 'liveStats' // Der spezifische Typ dieses Clients
     }));
 };
 
 ws.onmessage = (event) => {
     const message = JSON.parse(event.data);
     console.log('[FOLLOWER COUNTER] Nachricht vom Backend erhalten:', message);
+
+    updateTextDisplay('TWITCH-FOLLOWER: ' + message.data.totalFollowers)
 };
 
 ws.onclose = () => {
