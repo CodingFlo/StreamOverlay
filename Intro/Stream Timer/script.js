@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ws.send(JSON.stringify({
             action: 'identify', // Eine Aktion, damit der Server weiß, was zu tun ist
-            clientType: 'alert' // Der spezifische Typ dieses Clients
+            clientType: 'liveStats' // Der spezifische Typ dieses Clients
         }));
     };
 
@@ -83,14 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentVal === newVal) {
             obj.wrapper.classList.remove('animate');
-            obj.top.src = `timerNumbers/${newVal}.png`;
-            obj.bottom.src = `timerNumbers/${newVal}.png`;
+            obj.top.src = `../../customSigns/${newVal}.png`;
+            obj.bottom.src = `../../customSigns/${newVal}.png`;
             return;
         }
 
         obj.wrapper.classList.remove('animate');
-        obj.top.src = `timerNumbers/${currentVal}.png`;
-        obj.bottom.src = `timerNumbers/${newVal}.png`;
+        obj.top.src = `../../customSigns/${currentVal}.png`;
+        obj.bottom.src = `../../customSigns/${newVal}.png`;
         void obj.wrapper.offsetWidth; // Reflow erzwingen
 
         requestAnimationFrame(() => {
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             obj.wrapper.classList.add('animate');
 
             const handleAnimationEnd = function () {
-                obj.top.src = `timerNumbers/${newVal}.png`;
+                obj.top.src = `../../customSigns/${newVal}.png`;
                 obj.wrapper.classList.remove('animate');
                 void obj.wrapper.offsetWidth; // Reflow nach Reset
                 obj.wrapper.removeEventListener('animationend', handleAnimationEnd);
@@ -140,8 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             obj.wrapper.classList.remove('animate'); // Sicherstellen, dass keine Animation läuft
             void obj.wrapper.offsetWidth; // Reflow
-            obj.top.src = `timerNumbers/${[initialMinTens, initialMinOnes, initialSecTens, initialSecOnes][index]}.png`;
-            obj.bottom.src = `timerNumbers/${[initialMinTens, initialMinOnes, initialSecTens, initialSecOnes][index]}.png`;
+            obj.top.src = `../../customSigns/${[initialMinTens, initialMinOnes, initialSecTens, initialSecOnes][index]}.png`;
+            obj.bottom.src = `../../customSigns/${[initialMinTens, initialMinOnes, initialSecTens, initialSecOnes][index]}.png`;
             void obj.wrapper.offsetWidth; // Reflow
         });
     }

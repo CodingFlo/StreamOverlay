@@ -31,7 +31,6 @@ body {
     object-fit: cover;
 }
 
-<<<<<<< HEAD
 /* NEON-Rahmen relativ zum Container (= Bild) */
 .neon-frame-glow {
     box-sizing: border-box;
@@ -51,8 +50,6 @@ body {
     animation: neon-glow-pulse 1.5s infinite alternate ease-in-out;
 }
 
-=======
->>>>>>> 0b6987c452da5913f794fcdfa1248bd3f37fdbd9
 #facecam {
     height: 79.7%;
     bottom: 0;
@@ -125,14 +122,11 @@ body {
     left: 15.8%;
     height: 79.3%;
     aspect-ratio: 16/9;
-<<<<<<< HEAD
-    border: 4px solid var(--neon-color);
+    <<<<<<< HEAD border: 4px solid var(--neon-color);
     border-radius: 1em;
-=======
-    border: 8px solid var(--neon-color);
+    =======border: 8px solid var(--neon-color);
     border-radius: 2%;
->>>>>>> 0b6987c452da5913f794fcdfa1248bd3f37fdbd9
-    background-color: transparent;
+    >>>>>>>0b6987c452da5913f794fcdfa1248bd3f37fdbd9 background-color: transparent;
     box-shadow:
         0 0 3px rgba(223, 1, 1, 0.5),
         0 0 8px rgba(223, 1, 1, 0.3),

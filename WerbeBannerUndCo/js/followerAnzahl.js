@@ -6,7 +6,7 @@ const ANIMATION_DURATION_MS = 300;
 // Animationssteuerung ohne Warteschlange
 let isAnimating = false;
 let pendingNextText = null;
-const imagePath = "../Warten/Stream Timer/timerNumbers/"; // PNG-Zahlen & Doppelpunkt
+const imagePath = "../customSigns/"; // PNG-Zahlen & Doppelpunkt
 
 function getPngNameForChar(ch) {
     if (/^[0-9]$/.test(ch)) return ch; // 0-9
