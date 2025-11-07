@@ -1,6 +1,9 @@
 const canvas = document.getElementById('transition-canvas');
 const ctx = canvas.getContext('2d');
 
+const audio = new Audio('Sound.m4a');
+audio.volume = audio.volume * 0.8
+
 let width, height;
 function resize() {
     canvas.width = window.innerWidth;
@@ -183,11 +186,11 @@ function animate(ts) {
     else ctx.clearRect(0, 0, width, height);
 }
 
-
 // Starte Animation mit 50ms Verzögerung, in der die Partikel erstellt werden
-
 createParticlesAsync(PARTICLE_COUNT, () => {
     setTimeout(() => {
         requestAnimationFrame(animate);
     }, 450);
+    audio.play()
 });
+
