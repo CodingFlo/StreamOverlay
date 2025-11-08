@@ -19,6 +19,8 @@ body {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
+
+    padding-left: 5%;
 }
 
 /* 2. Container */
@@ -29,6 +31,7 @@ body {
     white-space: pre;
     align-items: flex-end;
     padding: 10px;
+    padding-top: 5px;
 }
 
 /* 3. Zeichen-Wrapper (variable Breite je Glyphe) */
@@ -141,4 +144,8 @@ body {
     /* Behält seinen Platz, wird unsichtbar */
     opacity: 0;
     transition: opacity var(--animation-duration-char-roll);
+}
+
+#twitch-logo {
+    height: 5%
 }

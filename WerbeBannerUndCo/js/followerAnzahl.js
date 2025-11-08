@@ -9,8 +9,9 @@ let pendingNextText = null;
 const imagePath = "../customSigns/"; // PNG-Zahlen & Doppelpunkt
 
 function getPngNameForChar(ch) {
-    if (/^[0-9]$/.test(ch)) return ch; // 0-9
+    if (/^[A-Z0-9]$/.test(ch)) return ch; //A-Z oder 0-9
     if (ch === ':') return 'doppelpunkt';
+    if (ch === '-') return 'minus';
     return null;
 }
 
