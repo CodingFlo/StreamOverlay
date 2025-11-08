@@ -32,8 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const message = JSON.parse(event.data);
         console.log('[Frontend Timer] Nachricht vom Backend erhalten:', message);
 
-        if (DEBUG_TIMER || message.type === 'streamStatusUpdate') {
+        if (DEBUG_TIMER || message.data) {
             const isOnline = message.data.isOnline;
+
+            console.log("Online Status: " + isOnline)
+            console.log("Debug Status: " + DEBUG_TIMER)
+
             if (DEBUG_TIMER || isOnline) {
                 console.log('[Frontend Timer] Stream ist ONLINE. Starte Timer.');
                 // Wichtig: showTimerWrapper wird jetzt IM hideStartText-Callback aufgerufen
